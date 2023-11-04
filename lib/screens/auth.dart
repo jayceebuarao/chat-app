@@ -39,6 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (error.code == 'email-already-in-use') {
         // ...
       }
+
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
