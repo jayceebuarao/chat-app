@@ -25,6 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
 
+    //if form not valid, or is in user sign up and imageform is null
     if (!isValid || !_isLogin && _selectedImage == null) {
       //show error message ...
       return;
@@ -38,15 +39,21 @@ class _AuthScreenState extends State<AuthScreen> {
         final userCredentials = await _firebase.signInWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
       } else {
+        //sign up user
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
 
+        //get firebase storage path
+        //... cannot upload image in initialization of new user, must create user first
         final storageRef = FirebaseStorage.instance
             .ref()
             .child('user_images')
             .child('${userCredentials.user!.uid}.jpg');
 
+        //upload image file to path
         await storageRef.putFile(_selectedImage!);
+
+        //store path url
         final imageUrl = await storageRef.getDownloadURL();
         print(imageUrl);
       }
