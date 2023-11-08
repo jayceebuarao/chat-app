@@ -27,7 +27,6 @@ class _NewMessageState extends State<NewMessage> {
       return;
     }
 
-    FocusScope.of(context).unfocus();
     _messageController.clear();
 
     //send to firebase
